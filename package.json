@@ -1,0 +1,30 @@
+{
+  "name": "leapfrog",
+  "version": "1.0.0",
+  "description": "fx data blotter",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "vite --open",
+    "build": "tsc && vite build",
+    "ts-output": "npx tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "immer": "^10.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-toastify": "^9.1.2",
+    "styled-components": "^5.3.9",
+    "zustand": "^4.3.7"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "@types/styled-components": "^5.1.26",
+    "@vitejs/plugin-react": "^3.1.0",
+    "typescript": "^4.9.5",
+    "vite": "^4.1.0"
+  }
+}
