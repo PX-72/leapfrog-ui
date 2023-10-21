@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useEffect } from 'react';
 import { ControlPanel } from './components/ControlPanel';
-import { BooksPanel } from './components/BooksPanel';
+import { MainPanel } from './components/MainPanel';
 import { useStore } from '@/store.js';
 import { mediaSmallScreenPoint } from './components/common/styles';
 
@@ -31,7 +31,7 @@ export const App = () => {
   return (
     <StyledAppContainer>
       <ControlPanel />
-      <BooksPanel />
+      <MainPanel />
     </StyledAppContainer>
   );
 };

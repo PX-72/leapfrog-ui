@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useStore } from '@/store.js';
 
-const StyledBooksPanel = styled.div`
+const StyledPanel = styled.div`
   background-color: ${(props) => `${props.theme.panel.backgroundColor}`};
   border-radius: ${(props) => `${props.theme.panel.borderRadius}}`};
   padding: ${(props) => `${props.theme.panel.padding}}`};
@@ -17,12 +17,12 @@ const StyledBookList = styled.div`
   flex-wrap: wrap;
 `;
 
-export const BooksPanel = () => {
+export const MainPanel = () => {
   const books = useStore((state) => state);
   
   return (
-    <StyledBooksPanel>
+    <StyledPanel>
 
-    </StyledBooksPanel>
+    </StyledPanel>
   );
 };
