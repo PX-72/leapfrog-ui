@@ -7,9 +7,9 @@ export interface MarketDataRequestConfiguration {
 }
 
 export const sendRequest = async (data: MarketDataRequestConfiguration): Promise<boolean> => {
-    const response = await fetch('http://localhost:8070/api/v1/market-data/data-request', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
+    const response = await fetch('http://localhost:8090/api/v1/market-data/data-request', {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data), 
     });
 
@@ -18,4 +18,4 @@ export const sendRequest = async (data: MarketDataRequestConfiguration): Promise
     }
 
     return response.ok;
-}
+};
