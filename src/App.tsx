@@ -22,7 +22,7 @@ const StyledAppContainer = styled.div`
 `;
 
 export const App = () => {
-  const bookStore = useStore();
+  const store = useStore();
 
   useEffect(() => {
     //todo - subscribe to market data
