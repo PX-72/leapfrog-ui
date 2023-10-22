@@ -2,7 +2,7 @@ export interface MarketDataRequestConfiguration {
     configurationId: string;
     size: number;
     intervalInMillis: number;
-    intervalDelayInMillis: number;
+    initialDelayInMillis: number;
     ccyFilter: string[];
 }
 
