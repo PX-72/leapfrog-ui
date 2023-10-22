@@ -25,7 +25,7 @@ export const App = () => {
   const bookStore = useStore();
 
   useEffect(() => {
-    //todo
+    //todo - subscribe to market data
   }, []);
 
   return (
