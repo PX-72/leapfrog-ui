@@ -25,7 +25,35 @@ export const App = () => {
   const store = useStore();
 
   useEffect(() => {
-    //todo - subscribe to market data
+
+    const ws = new WebSocket('ws://localhost:8090/market-data-ws');
+
+    ws.onopen = function() {
+      console.log('WebSocket Connection opened');
+    };
+
+    ws.onmessage = function(event) {
+      console.log('Message received:', event.data);
+    };
+
+    ws.onclose = function() {
+      console.log('WebSocket Connection closed');
+    };
+
+    ws.onerror = function(error) {
+      console.log('WebSocket Error:', error);
+    };
+
+    const handleBeforeUnload = () => ws.close();
+
+    // Add event listener
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      console.log('CLOSING...');
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      ws.close();
+    }
   }, []);
 
   return (
