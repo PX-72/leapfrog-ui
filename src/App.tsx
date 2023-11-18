@@ -4,6 +4,7 @@ import { ControlPanel } from './components/ControlPanel';
 import { MainPanel } from './components/MainPanel';
 import { useStore } from '@/store.js';
 import { mediaSmallScreenPoint } from './components/common/styles';
+import { subscribeToMarketData } from '@/api/marketDataApi';
 
 const StyledAppContainer = styled.div`
   display: grid;
@@ -24,37 +25,7 @@ const StyledAppContainer = styled.div`
 export const App = () => {
   const store = useStore();
 
-  useEffect(() => {
-
-    const ws = new WebSocket('ws://localhost:8090/market-data-ws');
-
-    ws.onopen = function() {
-      console.log('WebSocket Connection opened');
-    };
-
-    ws.onmessage = function(event) {
-      console.log('Message received:', event.data);
-    };
-
-    ws.onclose = function() {
-      console.log('WebSocket Connection closed');
-    };
-
-    ws.onerror = function(error) {
-      console.log('WebSocket Error:', error);
-    };
-
-    const handleBeforeUnload = () => ws.close();
-
-    // Add event listener
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      console.log('CLOSING...');
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-      ws.close();
-    }
-  }, []);
+  useEffect(() => subscribeToMarketData(console.log), []);
 
   return (
     <StyledAppContainer>
