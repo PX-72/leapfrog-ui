@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ElementType } from 'react';
 import { DefaultButton, DefaultDangerButton, SmallButton, DangerSmallButton } from './styles';
 import styled from 'styled-components';
 
@@ -11,16 +11,16 @@ type ConfirmableProps = {
   isInConfirmMode: boolean;
 };
 
-const makeMainButton = (BaseComponent: React.ElementType) => styled(BaseComponent)<ConfirmableProps>`
-  display: ${({ isInConfirmMode }) => (isInConfirmMode ? 'none' : 'block')};
+const makeMainButton = (BaseComponent: ElementType) => styled(BaseComponent)<ConfirmableProps>`
+  display: ${({ isInConfirmMode }) => isInConfirmMode ? 'none' : 'block'};
 `;
 
-const makeActionButton = (BaseComponent: React.ElementType) => styled(BaseComponent)<ConfirmableProps>`
-  display: ${({ isInConfirmMode }) => (isInConfirmMode ? 'block' : 'none')};
+const makeActionButton = (BaseComponent: ElementType) => styled(BaseComponent)<ConfirmableProps>`
+  display: ${({ isInConfirmMode }) => isInConfirmMode ? 'block' : 'none'};
 `;
 
-const makeCancelButton = (BaseComponent: React.ElementType) => styled(BaseComponent)<ConfirmableProps>`
-  display: ${({ isInConfirmMode }) => (isInConfirmMode ? 'block' : 'none')};
+const makeCancelButton = (BaseComponent: ElementType) => styled(BaseComponent)<ConfirmableProps>`
+  display: ${({ isInConfirmMode }) => isInConfirmMode ? 'block' : 'none'};
 `;
 
 const MainButton = makeMainButton(DefaultButton);

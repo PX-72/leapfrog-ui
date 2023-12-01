@@ -33,9 +33,9 @@ export const sendRequest = async (data: MarketDataRequestConfiguration): Promise
 
 const MARKET_DATA_URL = 'ws://localhost:8090/market-data-ws';
 
-const deserialiseMarketDataMessage = (message: MessageEvent): MarketDataResponse | undefined => JSON.parse(message.data) as MarketDataResponse;
+const deserialiseMarketDataMessage = (message: MessageEvent): MarketDataResponse => JSON.parse(message.data) as MarketDataResponse;
 
-export const subscribeToMarketData = (listener: (data: MarketDataResponse | undefined) => void) => createWebSocket(
+export const subscribeToMarketData = (listener: (data: MarketDataResponse) => void) => createWebSocket(
     MARKET_DATA_URL,
     message => listener(deserialiseMarketDataMessage(message)),
     () => {}
