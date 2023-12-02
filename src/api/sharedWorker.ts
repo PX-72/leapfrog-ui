@@ -13,9 +13,3 @@ self.onconnect = ({ ports: [port] }: MessageEvent) => {
     };
 };
 
-if (!isRunning) {
-    setInterval(() => {
-        counter++;
-        ports.forEach(p => p.postMessage(`counter is ${counter}`))
-    }, 1000);
-}
