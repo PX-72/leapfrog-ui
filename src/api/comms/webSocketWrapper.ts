@@ -5,7 +5,7 @@ const getReconnectionTimeout = (iteration: number): Promise<void> => {
     return new Promise(resolve => setTimeout(resolve, delay));
 };
 
-type WebSocketWrapper = {
+export type WebSocketWrapper = {
     send: (msg: string) => void,
     close: () => void
 };
