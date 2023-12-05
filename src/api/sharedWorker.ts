@@ -20,6 +20,7 @@ self.onconnect = ({ ports: [port] }: MessageEvent) => {
 
     port.onmessage = (m: MessageEvent) => {
         console.log(`ID: ${m.data}`);
+        //const portMessage = m.data as
 
 
     };
