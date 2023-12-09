@@ -31,7 +31,7 @@ export const sendRequest = async (data: MarketDataRequestConfiguration): Promise
     return response.ok;
 };
 
-const MARKET_DATA_URL = 'ws://localhost:8090/market-data-ws';
+/*const MARKET_DATA_URL = 'ws://localhost:8090/market-data-ws';
 
 const deserialiseMarketDataMessage = (message: MessageEvent): MarketDataResponse => JSON.parse(message.data) as MarketDataResponse;
 
@@ -39,4 +39,4 @@ export const subscribeToMarketData = (listener: (data: MarketDataResponse) => vo
     MARKET_DATA_URL,
     message => listener(deserialiseMarketDataMessage(message)),
     () => {}
-).close;
+).close;*/
