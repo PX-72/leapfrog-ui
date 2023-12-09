@@ -1,5 +1,5 @@
 import { useState, useEffect, ElementType } from 'react';
-import { DefaultButton, DefaultDangerButton, SmallButton, DangerSmallButton } from './styles';
+import { DefaultButton, DefaultDangerButton, SmallButton, DangerSmallButton } from './buttonStyles';
 import styled from 'styled-components';
 
 const ConfirmButtonSetContainer = styled.div`

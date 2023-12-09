@@ -1,3 +1,7 @@
+import DropDownList from '@/components/common/DropDownList';
+import { sendRequest } from '@/api/marketDataApi';
+import { DefaultButton } from '@/components/common/buttonStyles';
+
 
 type CurrencyPickerProps = {
     currencyPairs: string[],
@@ -5,14 +9,14 @@ type CurrencyPickerProps = {
 }
 
 const CurrencyPicker = ({ currencyPairs, selectCurrencyPair }: CurrencyPickerProps) => {
-    const options = currencyPairs.map(pair => {
-        return <option key={pair}>{pair}</option>
-    });
-
     return (
-        <input type="select" onChange={(e) => selectCurrencyPair(e.target.value)}>
-            {options}
-        </input>
+
+        <div style={{display: 'flex', gap: 8, alignItems: 'center'}}>
+            <span>Subscribe to</span>
+            <DropDownList options={currencyPairs} onSelect={selectCurrencyPair} />
+            <DefaultButton onClick={() => {}}>Subscribe</DefaultButton>
+        </div>
+
     )
 };
 

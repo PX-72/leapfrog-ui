@@ -1,5 +1,5 @@
 import { sendRequest } from '@/api/marketDataApi.js';
-import { DefaultButton } from '@/components/common/styles.js';
+import { DefaultButton } from '@/components/common/buttonStyles';
 
 export const MarketDataRequest = () => (
     <DefaultButton onClick={

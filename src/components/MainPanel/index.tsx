@@ -8,7 +8,6 @@ const StyledPanel = styled.div`
   padding: ${(props) => `${props.theme.panel.padding}}`};
   margin: ${(props) => `${props.theme.panel.margin}}`};
   margin-left: 0px;
-  padding-top: 0px;
   overflow: auto;
   grid-area: books;
 `;
@@ -19,7 +18,7 @@ export const MainPanel = () => {
 
   return (
     <StyledPanel>
-      <CurrencyPicker currencyPairs={currencyPairs} selectCurrencyPair={(c) => {}} />
+      <CurrencyPicker currencyPairs={currencyPairs} selectCurrencyPair={(c) => { console.log(c) }} />
     </StyledPanel>
   );
 };

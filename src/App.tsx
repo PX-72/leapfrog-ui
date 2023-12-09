@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { ControlPanel } from './components/ControlPanel';
 import { MainPanel } from './components/MainPanel';
-import { mediaSmallScreenPoint } from './components/common/styles';
+import { mediaSmallScreenPoint } from './components/common/buttonStyles';
+import { useEffect } from 'react';
+import { useStaticDataStore } from '@/stores/staticDataStore';
 
 const StyledAppContainer = styled.div`
   display: grid;
@@ -20,10 +22,17 @@ const StyledAppContainer = styled.div`
 `;
 
 export const App = () => {
-  return (
+
+    const loadCurrencyPairs = useStaticDataStore((state) => state.loadCurrencyPairs);
+
+    useEffect(() => {
+        loadCurrencyPairs();
+    }, []);
+
+    return (
     <StyledAppContainer>
       <ControlPanel />
       <MainPanel />
     </StyledAppContainer>
-  );
+    );
 };
