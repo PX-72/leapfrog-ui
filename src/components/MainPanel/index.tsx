@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { useStore } from '@/store.js';
+import CurrencyPicker from './CurrencyPicker';
+import { useStaticDataStore } from '@/stores/staticDataStore';
 
 const StyledPanel = styled.div`
   background-color: ${(props) => `${props.theme.panel.backgroundColor}`};
@@ -12,17 +13,13 @@ const StyledPanel = styled.div`
   grid-area: books;
 `;
 
-const StyledBookList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`;
 
 export const MainPanel = () => {
-  const books = useStore((state) => state);
-  
+  const currencyPairs = useStaticDataStore(store => store.currencyPairs);
+
   return (
     <StyledPanel>
-
+      <CurrencyPicker currencyPairs={currencyPairs} selectCurrencyPair={(c) => {}} />
     </StyledPanel>
   );
 };

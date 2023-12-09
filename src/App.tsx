@@ -1,10 +1,7 @@
 import styled from 'styled-components';
-import { useEffect } from 'react';
 import { ControlPanel } from './components/ControlPanel';
 import { MainPanel } from './components/MainPanel';
-import { useStore } from '@/store.js';
 import { mediaSmallScreenPoint } from './components/common/styles';
-import { getCurrencyPairs } from '@/api/staticDataApi';
 
 const StyledAppContainer = styled.div`
   display: grid;
@@ -23,12 +20,6 @@ const StyledAppContainer = styled.div`
 `;
 
 export const App = () => {
-  const store = useStore();
-
-  useEffect(() => {
-      const ccyPairs = getCurrencyPairs();
-  }, []);
-
   return (
     <StyledAppContainer>
       <ControlPanel />
