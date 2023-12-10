@@ -3,15 +3,17 @@ import { immer } from 'zustand/middleware/immer';
 import { getCurrencyPairs } from '@/api/staticDataApi';
 
 type Store = {
-    currencyPairs: string[];
+    currencyPairs: string[],
+    defaultCurrencyPair: string
 };
 
 const initialState: Store = {
-    currencyPairs: []
+    currencyPairs: [],
+    defaultCurrencyPair: ''
 };
 
 type Actions = {
-    loadCurrencyPairs: () => void;
+    loadCurrencyPairs: () => void
 };
 
 export const useStaticDataStore = create<Store & Actions, [['zustand/immer', never]]>(
@@ -21,7 +23,9 @@ export const useStaticDataStore = create<Store & Actions, [['zustand/immer', nev
             try {
                 const currencyPairs = await getCurrencyPairs();
                 set((state) => {
-                    state.currencyPairs = currencyPairs ?? [];
+                    const list = currencyPairs ?? [];
+                    state.currencyPairs = list;
+                    if (list.length > 0) state.defaultCurrencyPair = list[0];
                 });
             } catch (err) {
                 console.error(`Currency pairs static data could not be loaded. ${err}`);

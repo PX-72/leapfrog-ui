@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { MarketData } from '@/api/types';
-//import * as notification from './components/common/notification.js';
+// import * as notification from './components/common/notification.js';
 
 type Subscription = {
     data?: MarketData,
-    lastUpdated?: Date
+    lastUpdated?: Date,
     error?: string
-}
+};
 
 type Store = {
     subscriptions: {
@@ -17,7 +17,7 @@ type Store = {
 
 const initialState: Store = {
     subscriptions: {}
-}
+};
 
 type Actions = {
     addSubscriptions: (currencyPair: string) => void,
@@ -28,16 +28,13 @@ export const useMarketDataStore = create<Store & Actions, [['zustand/immer', nev
     immer((set, get) => ({
         ...initialState,
         addSubscriptions: currencyPair => {
-            if (!Object.hasOwn(get().subscriptions, currencyPair)){
-                set((state) => {
-                    state.subscriptions[currencyPair] = {};
+            if (!Object.hasOwn(get().subscriptions, currencyPair))
+                set(({ subscriptions }) => {
+                    subscriptions[currencyPair] = {};
                 });
-            }
         },
         removeSubscriptions: currencyPair => {
-            set((state) => {
-                delete state.subscriptions[currencyPair];
-            });
+            set(({ subscriptions }) => delete subscriptions[currencyPair]);
         }
     }))
 );

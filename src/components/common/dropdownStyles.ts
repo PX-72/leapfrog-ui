@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export const DefaultStyledSelect = styled.select`
     min-width: 200px;

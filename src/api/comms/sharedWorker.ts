@@ -32,22 +32,20 @@ const connectToWebSocket = () => {
         message => handleWsMessage(message),
         () => {}
     );
-}
+};
 
 const handleWsMessage = (message: MessageEvent) => {
     try {
         const msg = JSON.parse(message.data) as ServerEventContainer;
+
         if (!topicPortsMap.has(msg.topic)) {
             console.error(`Unknown topic name received from server: ${msg.topic}`);
             return;
         }
 
         const ports = topicPortsMap.get(msg.topic) ?? [];
-        for(const p of ports){
-            p.postMessage(msg.payload);
-        }
+        for (const p of ports) p.postMessage(msg.payload);
     } catch (err) {
         console.error(`An error occurred while consuming server message. ${err}`);
     }
-}
-
+};

@@ -3,24 +3,24 @@ import { DefaultButton, DefaultDangerButton, SmallButton, DangerSmallButton } fr
 import styled from 'styled-components';
 
 const ConfirmButtonSetContainer = styled.div`
-  display: flex;
-  gap: 0.3rem;
+    display: flex;
+    gap: 0.3rem;
 `;
 
 type ConfirmableProps = {
-  isInConfirmMode: boolean;
+    isInConfirmMode: boolean
 };
 
 const makeMainButton = (BaseComponent: ElementType) => styled(BaseComponent)<ConfirmableProps>`
-  display: ${({ isInConfirmMode }) => isInConfirmMode ? 'none' : 'block'};
+    display: ${({ isInConfirmMode }) => isInConfirmMode ? 'none' : 'block'};
 `;
 
 const makeActionButton = (BaseComponent: ElementType) => styled(BaseComponent)<ConfirmableProps>`
-  display: ${({ isInConfirmMode }) => isInConfirmMode ? 'block' : 'none'};
+    display: ${({ isInConfirmMode }) => isInConfirmMode ? 'block' : 'none'};
 `;
 
 const makeCancelButton = (BaseComponent: ElementType) => styled(BaseComponent)<ConfirmableProps>`
-  display: ${({ isInConfirmMode }) => isInConfirmMode ? 'block' : 'none'};
+    display: ${({ isInConfirmMode }) => isInConfirmMode ? 'block' : 'none'};
 `;
 
 const MainButton = makeMainButton(DefaultButton);
@@ -32,70 +32,70 @@ const SmallActionButton = makeActionButton(DangerSmallButton);
 const SmallCancelButton = makeCancelButton(SmallButton);
 
 type InternalConfirmButtonProps = {
-  onConfirm: () => void;
-  label: string;
-  mustReset: boolean;
-  MainBtn: typeof MainButton;
-  ActionBtn: typeof ActionButton;
-  CancelBtn: typeof CancelButton;
+    onConfirm: () => void,
+    label: string,
+    mustReset: boolean,
+    MainBtn: typeof MainButton,
+    ActionBtn: typeof ActionButton,
+    CancelBtn: typeof CancelButton
 };
 
 const InternalConfirmButton = ({
-  onConfirm,
-  label,
-  MainBtn,
-  ActionBtn,
-  CancelBtn,
-  mustReset
+     onConfirm,
+     label,
+     MainBtn,
+     ActionBtn,
+     CancelBtn,
+     mustReset
 }: InternalConfirmButtonProps) => {
-  const [isInConfirmMode, setConfirmMode] = useState(false);
+    const [isInConfirmMode, setConfirmMode] = useState(false);
 
-  useEffect(() => {
-    if (mustReset) setConfirmMode(false);
-  }, [mustReset]);
+    useEffect(() => {
+        if (mustReset) setConfirmMode(false);
+    }, [mustReset]);
 
-  return (
-    <>
-      <MainBtn onClick={() => setConfirmMode(true)} isInConfirmMode={isInConfirmMode}>
-        {label}
-      </MainBtn>
-      <ConfirmButtonSetContainer>
-        <CancelBtn onClick={() => setConfirmMode(false)} isInConfirmMode={isInConfirmMode}>
-          Cancel
-        </CancelBtn>
-        <ActionBtn
-          isInConfirmMode={isInConfirmMode}
-          onClick={() => {
-            onConfirm();
-            setConfirmMode(false);
-          }}>
-          {label}
-        </ActionBtn>
-      </ConfirmButtonSetContainer>
-    </>
-  );
+    return (
+        <>
+            <MainBtn onClick={() => setConfirmMode(true)} isInConfirmMode={isInConfirmMode}>
+                {label}
+            </MainBtn>
+            <ConfirmButtonSetContainer>
+                <CancelBtn onClick={() => setConfirmMode(false)} isInConfirmMode={isInConfirmMode}>
+                    Cancel
+                </CancelBtn>
+                <ActionBtn
+                    isInConfirmMode={isInConfirmMode}
+                    onClick={() => {
+                        onConfirm();
+                        setConfirmMode(false);
+                    }}>
+                   {label}
+                </ActionBtn>
+            </ConfirmButtonSetContainer>
+        </>
+    );
 };
 
 type ConfirmButtonProps = Pick<InternalConfirmButtonProps, 'onConfirm' | 'label' | 'mustReset'>;
 
 export const ConfirmButton = ({ onConfirm, label, mustReset }: ConfirmButtonProps) => (
-  <InternalConfirmButton
-    onConfirm={onConfirm}
-    label={label}
-    mustReset={mustReset}
-    MainBtn={MainButton}
-    ActionBtn={ActionButton}
-    CancelBtn={CancelButton}
-  />
+    <InternalConfirmButton
+        onConfirm={onConfirm}
+        label={label}
+        mustReset={mustReset}
+        MainBtn={MainButton}
+        ActionBtn={ActionButton}
+        CancelBtn={CancelButton}
+    />
 );
 
 export const SmallConfirmButton = ({ onConfirm, label, mustReset }: ConfirmButtonProps) => (
-  <InternalConfirmButton
-    onConfirm={onConfirm}
-    label={label}
-    mustReset={mustReset}
-    MainBtn={SmallMainButton}
-    ActionBtn={SmallActionButton}
-    CancelBtn={SmallCancelButton}
-  />
+    <InternalConfirmButton
+        onConfirm={onConfirm}
+        label={label}
+        mustReset={mustReset}
+        MainBtn={SmallMainButton}
+        ActionBtn={SmallActionButton}
+        CancelBtn={SmallCancelButton}
+    />
 );

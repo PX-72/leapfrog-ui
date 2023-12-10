@@ -20,8 +20,7 @@ export const createWebSocket = (
     let currentWebSocket: WebSocket;
 
     (function reopen() {
-        if (shouldClose)
-            return;
+        if (shouldClose) return;
 
         currentWebSocket = new WebSocket(url);
 

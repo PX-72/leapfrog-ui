@@ -6,7 +6,7 @@ export const MarketDataRequest = () => (
         () => sendRequest({
             configurationId: '83Y4384Y',
             size: 10,
-            intervalInMillis: 1000,
+            intervalInMillis: 1_000,
             initialDelayInMillis: 200,
             ccyFilter: ['USDEUR', 'GBPUSD']
         })

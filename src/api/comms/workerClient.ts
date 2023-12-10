@@ -1,18 +1,10 @@
-
-
 export const start = () => {
-
-    const id = crypto.randomUUID();
-
+    // const id = crypto.randomUUID();
     const worker = new SharedWorker('../sharedWorker.ts', { type: 'module' });
 
-    worker.onerror = (e: ErrorEvent) => console.error(`Error in the shared worker: ${e.error}`);
-
-    worker.port.onmessageerror = (e: MessageEvent) => console.error(`Error when communicating with the shared worker: ${e.data.toString()}`);
-
-    worker.port.onmessage = msg => console.log(msg.data.toString());
+    worker.onerror = ({ error }: ErrorEvent) => console.error(`Error in the shared worker: ${error}`);
+    worker.port.onmessageerror = ({ data }: MessageEvent) => console.error(`Error when communicating with the shared worker: ${data.toString()}`);
+    worker.port.onmessage = ({ data }: MessageEvent) => console.log(data.toString());
 
     worker.port.start();
-
-
 };
