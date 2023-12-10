@@ -2,14 +2,21 @@ import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { getCurrencyPairs } from '@/api/staticDataApi';
 
-type StaticDataStore = {
+type Store = {
     currencyPairs: string[];
+};
+
+const initialState: Store = {
+    currencyPairs: []
+};
+
+type Actions = {
     loadCurrencyPairs: () => void;
 };
 
-export const useStaticDataStore = create<StaticDataStore, [['zustand/immer', never]]>(
+export const useStaticDataStore = create<Store & Actions, [['zustand/immer', never]]>(
     immer((set) => ({
-        currencyPairs: [],
+        ...initialState,
         loadCurrencyPairs: async () => {
             try {
                 const currencyPairs = await getCurrencyPairs();

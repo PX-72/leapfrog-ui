@@ -1,6 +1,5 @@
 import { createWebSocket, WebSocketWrapper } from '@/api/comms/webSocketWrapper';
 //import { OperationTypeEnum } from '@/api/comms/operationTypeEnum';
-import { MarketDataResponse } from '@/api/marketDataApi';
 
 export {};
 

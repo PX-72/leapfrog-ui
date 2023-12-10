@@ -1,5 +1,9 @@
 
-export enum EventTypeEnum {
-    Subscribe = 0,
-    Unsubscribe
-}
+export type MarketData = {
+    ccyPair: string;
+    bid: number;
+    offer: number;
+    low: number;
+    high: number;
+    ecn: string;
+};

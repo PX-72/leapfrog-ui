@@ -8,15 +8,6 @@ export type MarketDataRequestConfiguration = {
     ccyFilter: string[];
 };
 
-export type MarketDataResponse = {
-    ccyPair: string;
-    bid: number;
-    offer: number;
-    low: number;
-    high: number;
-    ecn: string;
-};
-
 export const sendRequest = async (data: MarketDataRequestConfiguration): Promise<boolean> => {
     const response = await fetch('http://localhost:8090/api/v1/market-data/data-request', {
         method: 'PUT',

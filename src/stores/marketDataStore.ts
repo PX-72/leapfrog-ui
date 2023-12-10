@@ -1,21 +1,43 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
+import { MarketData } from '@/api/types';
 //import * as notification from './components/common/notification.js';
 
-type MarketDataStore = {
-    currencyPairSubscriptions: string[],
-    addCurrencyPairSubscriptions: (currencyPair: string) => void,
-    removeCurrencyPairSubscriptions: (currencyPair: string) => void
+type Subscription = {
+    data?: MarketData,
+    lastUpdated?: Date
+    error?: string
+}
+
+type Store = {
+    subscriptions: {
+        [currencyPair: string]: Subscription
+    }
 };
 
-export const useStore = create<MarketDataStore, [['zustand/immer', never]]>(
-    immer((set) => ({
-        currencyPairSubscriptions: [],
-        addCurrencyPairSubscriptions: currencyPair => {
+const initialState: Store = {
+    subscriptions: {}
+}
 
+type Actions = {
+    addSubscriptions: (currencyPair: string) => void,
+    removeSubscriptions: (currencyPair: string) => void
+};
+
+export const useMarketDataStore = create<Store & Actions, [['zustand/immer', never]]>(
+    immer((set, get) => ({
+        ...initialState,
+        addSubscriptions: currencyPair => {
+            if (!Object.hasOwn(get().subscriptions, currencyPair)){
+                set((state) => {
+                    state.subscriptions[currencyPair] = {};
+                });
+            }
         },
-        removeCurrencyPairSubscriptions: currencyPair => {
-
+        removeSubscriptions: currencyPair => {
+            set((state) => {
+                delete state.subscriptions[currencyPair];
+            });
         }
     }))
 );
