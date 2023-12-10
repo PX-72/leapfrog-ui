@@ -1,5 +1,4 @@
 import DropDownList from '@/components/common/DropDownList';
-import { sendRequest } from '@/api/marketDataApi';
 import { DefaultButton } from '@/components/common/buttonStyles';
 
 
