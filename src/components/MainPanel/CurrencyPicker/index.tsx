@@ -1,6 +1,7 @@
 import DropDownList from '@/components/common/DropDownList';
 import { DefaultButton } from '@/components/common/buttonStyles';
 import { useEffect, useState } from 'react';
+import { useMarketDataStore } from '@/stores/marketDataStore';
 
 type CurrencyPickerProps = {
     currencyPairs: string[],
@@ -9,6 +10,8 @@ type CurrencyPickerProps = {
 
 const CurrencyPicker = ({ currencyPairs, defaultCurrencyPair }: CurrencyPickerProps) => {
     const [selectedCurrencyPair, setSelectedCurrencyPair] = useState<string>('');
+
+    const addSubscription = useMarketDataStore(store => store.addSubscriptions);
 
     useEffect(() => {
         setSelectedCurrencyPair(defaultCurrencyPair);
@@ -19,7 +22,7 @@ const CurrencyPicker = ({ currencyPairs, defaultCurrencyPair }: CurrencyPickerPr
             <DropDownList options={currencyPairs}
                           onSelect={(c) => setSelectedCurrencyPair(c)}
                           defaultItem={defaultCurrencyPair}/>
-            <DefaultButton onClick={() => {console.log(selectedCurrencyPair)}}>Subscribe</DefaultButton>
+            <DefaultButton onClick={() => {addSubscription(selectedCurrencyPair)}}>Subscribe</DefaultButton>
         </div>
     );
 };
