@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 
 export const StyledRfqTicket = styled.div`
-    width: 140px;
-    height: 70px;
+    width: 400px;
+    height: 160px;
     border-radius: 0.5rem;
     border: solid 1px gray;
 `;
