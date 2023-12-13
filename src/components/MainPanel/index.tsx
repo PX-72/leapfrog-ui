@@ -18,7 +18,7 @@ export const StyledRfqTicketContainer = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    margin-top: 1.4rem;
+    margin-top: 1.5rem;
 `;
 
 export const MainPanel = () => {
