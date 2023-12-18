@@ -23,6 +23,7 @@ const StyledAppContainer = styled.div`
 
 export const App = () => {
     const loadCurrencyPairs = useStaticDataStore((state) => state.loadCurrencyPairs);
+
     useEffect(() => {
         loadCurrencyPairs();
     }, []);

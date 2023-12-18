@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import CurrencyPicker from './CurrencyPicker';
 import { useStaticDataStore } from '@/stores/staticDataStore';
 import { useMarketDataStore } from '@/stores/marketDataStore';
+import { useShallow } from 'zustand/react/shallow';
 import RfqTicket from '@/components/MainPanel/RfqTicket';
 
 const StyledPanel = styled.div`
@@ -24,13 +25,13 @@ export const StyledRfqTicketContainer = styled.div`
 export const MainPanel = () => {
     const currencyPairs = useStaticDataStore(store => store.currencyPairs);
     const defaultCurrencyPair = useStaticDataStore(store => store.defaultCurrencyPair);
-    const subscriptions = useMarketDataStore(store => store.subscriptions);
+    const subscribedCcyPairs = useMarketDataStore(useShallow(store => Object.keys(store.subscriptions)));
 
     return (
         <StyledPanel>
             <CurrencyPicker currencyPairs={currencyPairs} defaultCurrencyPair={defaultCurrencyPair} />
             <StyledRfqTicketContainer>
-                {Object.keys(subscriptions).map(s => (
+                {subscribedCcyPairs.map(s => (
                     <RfqTicket currencyPair={s} key={s}/>
                 ))}
             </StyledRfqTicketContainer>
