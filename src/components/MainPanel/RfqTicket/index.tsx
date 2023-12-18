@@ -17,7 +17,7 @@ const RfqTicket = ({ currencyPair }: RfqTicketProps) => {
 
     const marketDataSubscription = useMarketDataStore(state => state.subscriptions[currencyPair]);
 
-    return <StyledRfqTicket>{currencyPair}</StyledRfqTicket>
+    return <StyledRfqTicket>{currencyPair} / {marketDataSubscription?.data?.bid}</StyledRfqTicket>
 };
 
 export default RfqTicket;
