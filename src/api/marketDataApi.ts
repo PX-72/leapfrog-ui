@@ -1,4 +1,5 @@
-// import { createWebSocket } from '@/api/comms/webSocketWrapper';
+import { createWorkerClient, WorkerClient } from '@/api/comms/workerClient';
+
 
 export type MarketDataRequestConfiguration = {
     configurationId: string;
@@ -30,3 +31,15 @@ export const sendRequest = async (data: MarketDataRequestConfiguration): Promise
 //     message => listener(deserialiseMarketDataMessage(message)),
 //     () => {}
 // ).close;
+
+
+let client: WorkerClient;
+
+export const subscribeToMarketData = (currencyPair: string, ) => {
+    if (client === undefined)
+        client = createWorkerClient()
+}
+
+export const unsubscribeFromMarketData = (currencyPair: string) => {
+
+}

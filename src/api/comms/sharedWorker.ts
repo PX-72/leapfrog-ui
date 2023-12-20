@@ -20,10 +20,12 @@ self.onconnect = ({ ports: [port] }: MessageEvent) => {
     port.onmessage = (m: MessageEvent) => {
         console.log(`ID: ${m.data}`);
         //const portMessage = m.data as
-
-
     };
+
+    port.onmessageerror = (m: MessageEvent) => console.error(`ID: ${m.data}`);
 };
+
+
 
 
 const connectToWebSocket = () => {
