@@ -1,13 +1,17 @@
+import { Status } from './enums';
+
 const MAXIMUM_DELAY = 10_000;
 
 const getReconnectionTimeout = (iteration: number): Promise<void> => {
-    const delay = Math.min(2 ** (iteration - 2) * 1_000, MAXIMUM_DELAY);
+    const power = iteration >= 8 ? 8 : iteration;
+    const delay = Math.min(2 ** (power - 2) * 1_000, MAXIMUM_DELAY);
     return new Promise(resolve => setTimeout(resolve, delay));
 };
 
 export type WebSocketWrapper = {
     send: (msg: string) => void,
-    close: () => void
+    close: () => void,
+    getStatus: () => Status
 };
 
 export const createWebSocket = (
@@ -22,26 +26,51 @@ export const createWebSocket = (
     let currentWebSocket: WebSocket;
 
     (function reopen() {
-        if (shouldClose) return;
-
         currentWebSocket = new WebSocket(url);
 
         currentWebSocket.onmessage = onMessage;
         currentWebSocket.onerror = onError;
         currentWebSocket.onopen = onOpen;
-        currentWebSocket.onclose = onClose;
-
         currentWebSocket.onclose = async () => {
-            await getReconnectionTimeout(reconnectionIteration++);
-            reopen();
+            if (shouldClose) {
+                shouldClose = false;
+                reconnectionIteration = 0;
+                onClose();
+            } else {
+                await getReconnectionTimeout(reconnectionIteration++);
+                reopen();
+            }
         };
     })();
 
-    return {
-        send: msg => currentWebSocket.send(msg),
-        close: () => {
-            shouldClose = true;
-            currentWebSocket.close();
+    const close = () => {
+        shouldClose = true;
+        currentWebSocket.close();
+    }
+
+    const getStatus = (): Status => {
+        if (currentWebSocket === undefined) return Status.Closed;
+
+        switch (currentWebSocket.readyState) {
+            case WebSocket.CONNECTING: return Status.Connecting;
+            case WebSocket.OPEN: return Status.Open;
+            case WebSocket.CLOSING: return Status.Closing;
+            case WebSocket.CLOSED: return Status.Closed;
+            default: return Status.Unknown;
         }
+    }
+
+    const send = (msg: string) => {
+        if (getStatus() === Status.Open) {
+            currentWebSocket.send(msg);
+        } else {
+            console.error('Message could not be sent on websocket as it is not open.');
+        }
+    }
+
+    return {
+        send,
+        close,
+        getStatus
     };
 };

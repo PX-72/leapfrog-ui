@@ -3,11 +3,14 @@ export enum EventTypeEnum {
     unsubscribeFromMarketData = 'unsubscribeFromMarketData',
     marketDataResponse = 'marketDataResponse',
     connectionStatusChange = 'connectionStatusChange',
-    error = 'error'
+    error = 'error',
+    closePort = 'closePort'
 }
 
 export enum Status {
+    Unknown = 'Unknown',
     Closed = 'Closed',
-    Ready = 'Ready',
-    Connecting = 'Connecting',
+    Closing = 'Closing',
+    Open = 'Open',
+    Connecting = 'Connecting'
 }

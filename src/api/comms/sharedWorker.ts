@@ -16,25 +16,28 @@ let ws: WebSocketWrapper;
 
 self.onconnect = ({ ports: [port] }: MessageEvent) => {
     ports.push(port);
-
-    port.onmessage = (m: MessageEvent) => {
-        console.log(`ID: ${m.data}`);
-        //const portMessage = m.data as
-    };
-
-    port.onmessageerror = (m: MessageEvent) => console.error(`ID: ${m.data}`);
+    port.onmessage = onPortMessageReceived;
 };
 
-const broadcast = (msg: { type: EventTypeEnum, message: any | undefined }) => ports.forEach(p => p.postMessage(msg));
+const onPortMessageReceived = (m: MessageEvent) => {
+
+    switch (m.type) {
+        case EventTypeEnum.subscribeToMarketData: {
+
+        }
+    }
+};
+
+const broadcast = (message: { type: EventTypeEnum, data: any | undefined }) => ports.forEach(p => p.postMessage(message));
 
 const connectToWebSocket = () => {
     if (!ws)
          ws = createWebSocket(
             MARKET_DATA_URL,
             message => handleWsMessage(message),
-            () => broadcast({type: EventTypeEnum.error, message: { error: 'An error occurred in the websocket connection.' }}),
-             () => broadcast({type: EventTypeEnum.connectionStatusChange, message: { status: Status.Ready }}),
-             () => broadcast({type: EventTypeEnum.connectionStatusChange, message: { status: Status.Closed }}),
+            () => broadcast({type: EventTypeEnum.error, data: { error: 'An error occurred in the websocket connection.' }}),
+             () => broadcast({type: EventTypeEnum.connectionStatusChange, data: { status: Status.Open }}),
+             () => broadcast({type: EventTypeEnum.connectionStatusChange, data: { status: Status.Closed }}),
         );
 };
 
