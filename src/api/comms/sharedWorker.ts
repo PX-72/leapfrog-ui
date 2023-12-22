@@ -1,5 +1,5 @@
-import { createWebSocket, WebSocketWrapper } from '@/api/comms/webSocketWrapper';
-//import { OperationTypeEnum } from '@/api/comms/operationTypeEnum';
+import { createWebSocket, WebSocketWrapper } from './webSocketWrapper';
+import { EventTypeEnum, Status } from './enums';
 
 export {};
 
@@ -25,15 +25,17 @@ self.onconnect = ({ ports: [port] }: MessageEvent) => {
     port.onmessageerror = (m: MessageEvent) => console.error(`ID: ${m.data}`);
 };
 
-
-
+const broadcast = (msg: { type: EventTypeEnum, message: any | undefined }) => ports.forEach(p => p.postMessage(msg));
 
 const connectToWebSocket = () => {
-     ws = createWebSocket(
-        MARKET_DATA_URL,
-        message => handleWsMessage(message),
-        () => {}
-    );
+    if (!ws)
+         ws = createWebSocket(
+            MARKET_DATA_URL,
+            message => handleWsMessage(message),
+            () => broadcast({type: EventTypeEnum.error, message: { error: 'An error occurred in the websocket connection.' }}),
+             () => broadcast({type: EventTypeEnum.connectionStatusChange, message: { status: Status.Ready }}),
+             () => broadcast({type: EventTypeEnum.connectionStatusChange, message: { status: Status.Closed }}),
+        );
 };
 
 const handleWsMessage = (message: MessageEvent) => {

@@ -1,5 +1,5 @@
 import { MessageWrapper, toMessageWrapper } from './sharedMessageWrapper';
-import { EventTypeEnum } from './eventTypeEnum';
+import { EventTypeEnum, Status } from './enums';
 
 export type WorkerClientInput = {
     onMessage: (message: string) => void,
@@ -13,30 +13,45 @@ export type WorkerClient = {
 
 const portId = crypto.randomUUID();
 let worker: SharedWorker;
+let currentStatus: Status = Status.Closed;
 
-const send = (message: string, eventType: EventTypeEnum) => {
+const getSharedWorker = () => new SharedWorker('../sharedWorker.ts', { type: 'module' });
+
+export const send = (message: string, eventType: EventTypeEnum) => {
+    if (worker === undefined)
+        worker = getSharedWorker();
+
     worker?.port.postMessage(toMessageWrapper(portId, eventType, message));
 };
 
-const close = () => {
+export const close = () => {
     worker?.port.close();
-}
+};
 
-export const createWorkerClient = ({onMessage, onError}: WorkerClientInput): WorkerClient => {
+export const onMessage = ({onMessage, onError}: WorkerClientInput): void => {
 
     if (worker === undefined) {
-        worker = new SharedWorker('../sharedWorker.ts', { type: 'module' });
+        worker = getSharedWorker();
 
-        worker.onerror = ({ error }: ErrorEvent) => onError(new Error(`Error in the shared worker: ${error}`));
-        worker.port.onmessageerror = ({ data }: MessageEvent) => onError(new Error(`Error when communicating with the shared worker: ${data.toString()}`));
-        worker.port.onmessage = msg => {
+     worker.port.onmessage = msg => {
             const data = msg.data as MessageWrapper;
             if (data?.portId === portId)
                 onMessage(msg.data.message);
-        }
+        };
     }
 
     //worker.port.start(); // not needed as worker.port.onmessage implicitly starts the port
+};
 
-    return { send, close };
+export const onError = ({onError}: WorkerClientInput): void => {
+
+    if (worker === undefined) {
+        worker = getSharedWorker();
+
+        worker.onerror = ({ error }: ErrorEvent) => onError(new Error(`Error in the shared worker: ${error}`));
+        worker.port.onmessageerror = ({ data }: MessageEvent) =>
+            onError(new Error(`Error when communicating with the shared worker: ${data.toString()}`));
+    }
+
+    //worker.port.start(); // not needed as worker.port.onmessage implicitly starts the port
 };

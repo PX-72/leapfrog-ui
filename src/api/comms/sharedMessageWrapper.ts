@@ -1,4 +1,4 @@
-import { EventTypeEnum } from '@/api/comms/eventTypeEnum';
+import { EventTypeEnum } from '@/api/comms/enums/eventTypeEnum';
 
 export type MessageWrapper = {
     portId: string,

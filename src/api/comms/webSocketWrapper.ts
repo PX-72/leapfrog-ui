@@ -13,7 +13,9 @@ export type WebSocketWrapper = {
 export const createWebSocket = (
     url: string,
     onMessage: (event: MessageEvent) => void,
-    onError: (event: Event) => void
+    onError: (event: Event) => void,
+    onOpen: () => void,
+    onClose: () => void
 ): WebSocketWrapper => {
     let shouldClose = false;
     let reconnectionIteration = 0;
@@ -26,6 +28,8 @@ export const createWebSocket = (
 
         currentWebSocket.onmessage = onMessage;
         currentWebSocket.onerror = onError;
+        currentWebSocket.onopen = onOpen;
+        currentWebSocket.onclose = onClose;
 
         currentWebSocket.onclose = async () => {
             await getReconnectionTimeout(reconnectionIteration++);
