@@ -15,7 +15,7 @@ const portId = crypto.randomUUID();
 let worker: SharedWorker;
 let currentStatus: Status = Status.Closed;
 
-const getSharedWorker = () => new SharedWorker('../sharedWorker.ts', { type: 'module' });
+const getSharedWorker = () => new SharedWorker('../marketDataSharedWorker.ts', { type: 'module' });
 
 export const send = (message: string, eventType: EventTypeEnum) => {
     if (worker === undefined)

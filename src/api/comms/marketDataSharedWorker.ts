@@ -16,15 +16,35 @@ let ws: WebSocketWrapper;
 
 self.onconnect = ({ ports: [port] }: MessageEvent) => {
     ports.push(port);
-    port.onmessage = onPortMessageReceived;
+    port.onmessage = (m: MessageEvent) => onPortMessageReceived(m, port);
 };
 
-const onPortMessageReceived = (m: MessageEvent) => {
-
+const onPortMessageReceived = (m: MessageEvent, port: MessagePort) => {
     switch (m.type) {
         case EventTypeEnum.subscribeToMarketData: {
-
+            // todo
+            break;
         }
+        case EventTypeEnum.unsubscribeFromMarketData: {
+            // todo
+            break;
+        }
+        case EventTypeEnum.closePort: {
+            port.close();
+            const topicsToUnsubscribeFrom = [];
+            for (const [topic, portList] of topicPortsMap){
+                const i = portList.findIndex(p => p == port);
+                if (i >= 0) {
+                    portList.splice(i, 1);
+                    if (portList.length === 0) topicsToUnsubscribeFrom.push(topic);
+                }
+            }
+
+            // todo: unsubscribe from topicsToUnsubscribeFrom
+
+            break;
+        }
+        default: console.error(`Unexpected message type was received: ${m.type}`);
     }
 };
 
