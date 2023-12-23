@@ -11,6 +11,6 @@ export enum Status {
     Unknown = 'Unknown',
     Closed = 'Closed',
     Closing = 'Closing',
-    Open = 'Open',
+    Ready = 'Ready',
     Connecting = 'Connecting'
 }

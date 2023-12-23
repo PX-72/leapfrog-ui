@@ -40,7 +40,7 @@ const onPortMessageReceived = (m: MessageEvent, port: MessagePort) => {
                 }
             }
 
-            // todo: unsubscribe from topicsToUnsubscribeFrom
+            // todo: unsubscribe from topicsToUnsubscribeFrom and delete keys
 
             break;
         }
@@ -56,7 +56,7 @@ const connectToWebSocket = () => {
             MARKET_DATA_URL,
             message => handleWsMessage(message),
             () => broadcast({type: EventTypeEnum.error, data: { error: 'An error occurred in the websocket connection.' }}),
-             () => broadcast({type: EventTypeEnum.connectionStatusChange, data: { status: Status.Open }}),
+             () => broadcast({type: EventTypeEnum.connectionStatusChange, data: { status: Status.Ready }}),
              () => broadcast({type: EventTypeEnum.connectionStatusChange, data: { status: Status.Closed }}),
         );
 };

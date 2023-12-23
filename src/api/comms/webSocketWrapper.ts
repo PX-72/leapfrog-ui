@@ -53,7 +53,7 @@ export const createWebSocket = (
 
         switch (currentWebSocket.readyState) {
             case WebSocket.CONNECTING: return Status.Connecting;
-            case WebSocket.OPEN: return Status.Open;
+            case WebSocket.OPEN: return Status.Ready;
             case WebSocket.CLOSING: return Status.Closing;
             case WebSocket.CLOSED: return Status.Closed;
             default: return Status.Unknown;
@@ -61,7 +61,7 @@ export const createWebSocket = (
     }
 
     const send = (msg: string) => {
-        if (getStatus() === Status.Open) {
+        if (getStatus() === Status.Ready) {
             currentWebSocket.send(msg);
         } else {
             console.error('Message could not be sent on websocket as it is not open.');
