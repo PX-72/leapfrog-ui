@@ -8,27 +8,24 @@ const MARKET_DATA_URL = 'ws://localhost:8090/market-data-ws';
 
 type ServerEventContainer = {
     topic: string,
-    payload?: string,
+    payload?: string
 };
 
 const ports: MessagePort[] = [];
 let ws: WebSocketWrapper;
 
-const broadcast = (message: { type: EventType, data: any | undefined }) => ports.forEach(p => p.postMessage(message));
+const broadcast = (message: { type: EventType, data: any }) => ports.forEach(p => p.postMessage(message));
 
-const postError = (error: string, port: MessagePort | undefined) => {
+const postError = (error: string, port?: MessagePort) => {
     const e = {type: EventType.Error, data: { error }};
     if (!port) broadcast(e);
     else port.postMessage(e);
 }
 
-const sendWsMessage = (message: string, sourcePort: MessagePort | undefined) => {
+const sendWsMessage = (message: string, sourcePort?: MessagePort) => {
     if (!ws || ws.getStatus() !== Status.Ready) {
         postError('Connection is not ready. Message could not be sent.', sourcePort);
-        return;
-    }
-
-    ws.send(message);
+    } else ws.send(message);
 }
 
 const getMarketDataMessage = (type: EventType, currencyPair: string): string => JSON.stringify({ type, currencyPair });
@@ -75,14 +72,13 @@ const onPortMessageReceived = (m: MessageEvent, port: MessagePort) => {
 };
 
 const connectToWebSocket = () => {
-    if (!ws)
-         ws = createWebSocket(
-            MARKET_DATA_URL,
-            message => handleWsMessage(message),
-            () => postError('An error occurred in the websocket connection.', undefined),
-             () => broadcast({type: EventType.ConnectionStatusChange, data: { status: Status.Ready }}),
-             () => broadcast({type: EventType.ConnectionStatusChange, data: { status: Status.Closed }}),
-        );
+     ws ??= createWebSocket(
+        MARKET_DATA_URL,
+        message => handleWsMessage(message),
+        () => postError('An error occurred in the websocket connection.'),
+         () => broadcast({type: EventType.ConnectionStatusChange, data: { status: Status.Ready }}),
+         () => broadcast({type: EventType.ConnectionStatusChange, data: { status: Status.Closed }}),
+    );
 };
 
 const handleWsMessage = (message: MessageEvent) => {

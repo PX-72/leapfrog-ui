@@ -33,7 +33,7 @@ export const onMessage = ({onMessage, onError}: WorkerClientInput): void => {
     if (worker === undefined) {
         worker = getSharedWorker();
 
-     worker.port.onmessage = msg => {
+        worker.port.onmessage = msg => {
             const data = msg.data as MessageWrapper;
             if (data?.portId === portId)
                 onMessage(msg.data.message);

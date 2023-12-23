@@ -3,8 +3,7 @@ import { Status } from './enums';
 const MAXIMUM_DELAY = 10_000;
 
 const getReconnectionTimeout = (iteration: number): Promise<void> => {
-    const power = iteration > 8 ? 8 : iteration;
-    const delay = Math.min(2 ** (power - 2) * 1_000, MAXIMUM_DELAY);
+    const delay = Math.min(2 ** (iteration - 2) * 1_000, MAXIMUM_DELAY);
     return new Promise(resolve => setTimeout(resolve, delay));
 };
 
@@ -46,7 +45,7 @@ export const createWebSocket = (
     const close = () => {
         shouldClose = true;
         currentWebSocket.close();
-    }
+    };
 
     const getStatus = (): Status => {
         if (currentWebSocket === undefined) return Status.Closed;
@@ -58,7 +57,7 @@ export const createWebSocket = (
             case WebSocket.CLOSED: return Status.Closed;
             default: return Status.Unknown;
         }
-    }
+    };
 
     const send = (msg: string) => {
         if (getStatus() === Status.Ready) {
@@ -66,7 +65,7 @@ export const createWebSocket = (
         } else {
             console.error('Message could not be sent on websocket as it is not open.');
         }
-    }
+    };
 
     return {
         send,
