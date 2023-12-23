@@ -1,5 +1,7 @@
 import { createWebSocket, WebSocketWrapper } from './webSocketWrapper';
-import { EventTypeEnum, Status } from './enums';
+import { EventType, Status } from './enums';
+import messageEventQueue from './subscriptionService';
+import subscriptionMap from './subscriptionMap';
 
 export {};
 
@@ -11,7 +13,6 @@ type ServerEventContainer = {
 };
 
 const ports: MessagePort[] = [];
-const topicPortsMap = new Map<string, MessagePort[]>();
 let ws: WebSocketWrapper;
 
 self.onconnect = ({ ports: [port] }: MessageEvent) => {
@@ -21,26 +22,28 @@ self.onconnect = ({ ports: [port] }: MessageEvent) => {
 
 const onPortMessageReceived = (m: MessageEvent, port: MessagePort) => {
     switch (m.type) {
-        case EventTypeEnum.subscribeToMarketData: {
-            // todo
-            break;
-        }
-        case EventTypeEnum.unsubscribeFromMarketData: {
-            // todo
-            break;
-        }
-        case EventTypeEnum.closePort: {
-            port.close();
-            const topicsToUnsubscribeFrom = [];
-            for (const [topic, portList] of topicPortsMap){
-                const i = portList.findIndex(p => p == port);
-                if (i >= 0) {
-                    portList.splice(i, 1);
-                    if (portList.length === 0) topicsToUnsubscribeFrom.push(topic);
-                }
-            }
+        case EventType.SubscribeToMarketData: {
+            let mustSubscribe = subscriptionMap.addPort(m.data.currencyPair, port);
 
-            // todo: unsubscribe from topicsToUnsubscribeFrom and delete keys
+            // todo: if (mustSubscribe) subscribe()
+
+            break;
+        }
+        case EventType.UnsubscribeFromMarketData: {
+            let mustUnsubscribe = subscriptionMap.removePortForKey(m.data.currencyPair, port);
+
+            // todo: if (mustUnsubscribe) unsubscribe()
+
+            break;
+        }
+        case EventType.ClosePort: {
+            port.close();
+
+            const i = ports.indexOf(port);
+            if (i >= 0) ports.splice(i, 1);
+
+            const topicsToUnsubscribeFrom = subscriptionMap.removePort(port);
+            // todo: unsubscribe from topicsToUnsubscribeFrom
 
             break;
         }
@@ -48,29 +51,23 @@ const onPortMessageReceived = (m: MessageEvent, port: MessagePort) => {
     }
 };
 
-const broadcast = (message: { type: EventTypeEnum, data: any | undefined }) => ports.forEach(p => p.postMessage(message));
+const broadcast = (message: { type: EventType, data: any | undefined }) => ports.forEach(p => p.postMessage(message));
 
 const connectToWebSocket = () => {
     if (!ws)
          ws = createWebSocket(
             MARKET_DATA_URL,
             message => handleWsMessage(message),
-            () => broadcast({type: EventTypeEnum.error, data: { error: 'An error occurred in the websocket connection.' }}),
-             () => broadcast({type: EventTypeEnum.connectionStatusChange, data: { status: Status.Ready }}),
-             () => broadcast({type: EventTypeEnum.connectionStatusChange, data: { status: Status.Closed }}),
+            () => broadcast({type: EventType.Error, data: { error: 'An error occurred in the websocket connection.' }}),
+             () => broadcast({type: EventType.ConnectionStatusChange, data: { status: Status.Ready }}),
+             () => broadcast({type: EventType.ConnectionStatusChange, data: { status: Status.Closed }}),
         );
 };
 
 const handleWsMessage = (message: MessageEvent) => {
     try {
         const msg = JSON.parse(message.data) as ServerEventContainer;
-
-        if (!topicPortsMap.has(msg.topic)) {
-            console.error(`Unknown topic name received from server: ${msg.topic}`);
-            return;
-        }
-
-        const ports = topicPortsMap.get(msg.topic) ?? [];
+        const ports = subscriptionMap.getPortsByKey(msg.topic) ?? [];
         for (const p of ports) p.postMessage(msg.payload);
     } catch (err) {
         console.error(`An error occurred while consuming server message. ${err}`);

@@ -1,10 +1,10 @@
-export enum EventTypeEnum {
-    subscribeToMarketData = 'subscribeToMarketData',
-    unsubscribeFromMarketData = 'unsubscribeFromMarketData',
-    marketDataResponse = 'marketDataResponse',
-    connectionStatusChange = 'connectionStatusChange',
-    error = 'error',
-    closePort = 'closePort'
+export enum EventType {
+    SubscribeToMarketData = 'SubscribeToMarketData',
+    UnsubscribeFromMarketData = 'UnsubscribeFromMarketData',
+    MarketDataResponse = 'MarketDataResponse',
+    ConnectionStatusChange = 'ConnectionStatusChange',
+    Error = 'Error',
+    ClosePort = 'ClosePort'
 }
 
 export enum Status {

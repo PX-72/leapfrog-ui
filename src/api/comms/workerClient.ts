@@ -1,5 +1,5 @@
 import { MessageWrapper, toMessageWrapper } from './sharedMessageWrapper';
-import { EventTypeEnum, Status } from './enums';
+import { EventType, Status } from './enums';
 
 export type WorkerClientInput = {
     onMessage: (message: string) => void,
@@ -7,7 +7,7 @@ export type WorkerClientInput = {
 };
 
 export type WorkerClient = {
-    send: (message: string, eventType: EventTypeEnum) => void,
+    send: (message: string, eventType: EventType) => void,
     close: () => void
 };
 
@@ -17,7 +17,7 @@ let currentStatus: Status = Status.Closed;
 
 const getSharedWorker = () => new SharedWorker('../marketDataSharedWorker.ts', { type: 'module' });
 
-export const send = (message: string, eventType: EventTypeEnum) => {
+export const send = (message: string, eventType: EventType) => {
     if (worker === undefined)
         worker = getSharedWorker();
 
