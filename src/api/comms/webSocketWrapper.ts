@@ -3,7 +3,7 @@ import { Status } from './enums';
 const MAXIMUM_DELAY = 10_000;
 
 const getReconnectionTimeout = (iteration: number): Promise<void> => {
-    const power = iteration >= 8 ? 8 : iteration;
+    const power = iteration > 8 ? 8 : iteration;
     const delay = Math.min(2 ** (power - 2) * 1_000, MAXIMUM_DELAY);
     return new Promise(resolve => setTimeout(resolve, delay));
 };

@@ -1,11 +1,13 @@
 import { EventType } from './enums';
+import { createWebSocket, WebSocketWrapper } from './webSocketWrapper';
 
-export type QueueItemType = {
+type QueueItemType = {
     eventType: EventType,
     messageEvent: MessageEvent
 };
 
 const queue: QueueItemType[] = [];
+let ws: WebSocketWrapper;
 
 const add = ({ eventType, messageEvent }: QueueItemType) => queue.push({ eventType, messageEvent });
 
@@ -15,4 +17,12 @@ function* take() {
     }
 }
 
-export default { add, take };
+const send = (message: string) => {
+
+}
+
+
+
+
+
+//export default { add, take };
