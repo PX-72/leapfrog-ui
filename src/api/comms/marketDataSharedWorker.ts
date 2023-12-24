@@ -41,18 +41,14 @@ const onPortMessageReceived = (m: MessageEvent, port: MessagePort) => {
     switch (m.type) {
         case EventType.SubscribeToMarketData: {
             let mustSubscribe = subscriptionMap.addPort(m.data.currencyPair, port);
-
             if (mustSubscribe)
                 sendWsMessage(getMarketDataMessage(EventType.SubscribeToMarketData, m.data.currencyPair), port);
-
             break;
         }
         case EventType.UnsubscribeFromMarketData: {
             let mustUnsubscribe = subscriptionMap.removePortForKey(m.data.currencyPair, port);
-
             if (mustUnsubscribe)
                 sendWsMessage(getMarketDataMessage(EventType.UnsubscribeFromMarketData, m.data.currencyPair), port);
-
             break;
         }
         case EventType.ClosePort: {
@@ -61,7 +57,6 @@ const onPortMessageReceived = (m: MessageEvent, port: MessagePort) => {
                 sendWsMessage(getMarketDataMessage(EventType.UnsubscribeFromMarketData, currencyPair), port));
 
             port.close();
-
             const i = ports.indexOf(port);
             if (i > -1) ports.splice(i, 1);
 
