@@ -1,12 +1,12 @@
-import { MessageWrapper, toMessageWrapper } from './sharedMessageWrapper';
+import { MessageWrapper, toMessageWrapper } from './old_sharedMessageWrapper';
 import { EventType, Status } from './enums';
 
-export type WorkerClientInput = {
+type WorkerClientInput = {
     onMessage: (message: string) => void,
     onError: (e: Error) => void
 };
 
-export type WorkerClient = {
+type WorkerClient = {
     send: (message: string, eventType: EventType) => void,
     close: () => void
 };
@@ -17,18 +17,18 @@ let currentStatus: Status = Status.Closed;
 
 const getSharedWorker = () => new SharedWorker('../marketDataSharedWorker.ts', { type: 'module' });
 
-export const send = (message: string, eventType: EventType) => {
+const send = (message: string, eventType: EventType) => {
     if (worker === undefined)
         worker = getSharedWorker();
 
     worker?.port.postMessage(toMessageWrapper(portId, eventType, message));
 };
 
-export const close = () => {
+const close = () => {
     worker?.port.close();
 };
 
-export const onMessage = ({onMessage, onError}: WorkerClientInput): void => {
+const onMessage = ({onMessage, onError}: WorkerClientInput): void => {
 
     if (worker === undefined) {
         worker = getSharedWorker();
@@ -43,7 +43,7 @@ export const onMessage = ({onMessage, onError}: WorkerClientInput): void => {
     //worker.port.start(); // not needed as worker.port.onmessage implicitly starts the port
 };
 
-export const onError = ({onError}: WorkerClientInput): void => {
+const onError = ({onError}: WorkerClientInput): void => {
 
     if (worker === undefined) {
         worker = getSharedWorker();

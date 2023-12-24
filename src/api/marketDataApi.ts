@@ -1,5 +1,3 @@
-import { createWorkerClient, WorkerClient } from '@/api/comms/marketDataWorkerClient';
-
 
 export type MarketDataRequestConfiguration = {
     configurationId: string;
@@ -32,14 +30,3 @@ export const sendRequest = async (data: MarketDataRequestConfiguration): Promise
 //     () => {}
 // ).close;
 
-
-let client: WorkerClient;
-
-export const subscribeToMarketData = (currencyPair: string, ) => {
-    if (client === undefined)
-        client = createWorkerClient()
-}
-
-export const unsubscribeFromMarketData = (currencyPair: string) => {
-
-}
