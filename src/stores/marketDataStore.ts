@@ -4,19 +4,28 @@ import { MarketData } from '@/api/types';
 // import * as notification from './components/common/notification.js';
 
 type Subscription = {
-    isActive: boolean
     data?: MarketData,
-    lastUpdated?: Date,
-    error?: string
+    lastUpdated?: Date
+};
+
+type StatusInformation = {
+    statusMessage: string,
+    hasError: boolean,
+    errorMessage?: string
 };
 
 type Store = {
+    status: StatusInformation,
     subscriptions: {
         [currencyPair: string]: Subscription
     }
 };
 
 const initialState: Store = {
+    status: {
+        statusMessage: 'closed',
+        hasError: false
+    },
     subscriptions: {}
 };
 
@@ -31,7 +40,7 @@ export const useMarketDataStore = create<Store & Actions, [['zustand/immer', nev
         addSubscriptions: currencyPair => {
             if (!Object.hasOwn(get().subscriptions, currencyPair))
                 set(({ subscriptions }) => {
-                    subscriptions[currencyPair] = { isActive: false };
+                    subscriptions[currencyPair] = {};
                 });
         },
         removeSubscriptions: currencyPair => {
