@@ -1,4 +1,4 @@
-import { createWorkerClient, WorkerClient } from '@/api/comms/workerClient';
+import { createWorkerClient, WorkerClient } from '@/api/comms/marketDataWorkerClient';
 
 
 export type MarketDataRequestConfiguration = {
