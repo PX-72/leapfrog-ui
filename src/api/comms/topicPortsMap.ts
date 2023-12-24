@@ -1,18 +1,17 @@
 
-const map = new Map<string, MessagePort[]>();
+const map = new Map<string, Set<MessagePort>>();
 
 const getPortsByKey = (key: string): MessagePort[] => [...(map.get(key) ?? [])];
 
 const addPort = (key: string, port: MessagePort): boolean => {
     if (!map.has(key)) {
-        map.set(key, [port]);
+        map.set(key, new Set([port]));
         return true;
     }
 
-    const portList = map.get(key);
-    const i = portList!.indexOf(port);
-    if (i === -1) {
-        portList?.push(port);
+    const portSet = map.get(key)!;
+    if (!portSet.has(port)) {
+        portSet.add(port);
         return true;
     }
 
@@ -22,13 +21,9 @@ const addPort = (key: string, port: MessagePort): boolean => {
 const removePortForKey = (key: string, port: MessagePort): boolean => {
     if (!map.has(key)) return false;
 
-    const portList = map.get(key);
-    const i = portList!.indexOf(port);
-
-    if (i === -1) return false;
-
-    portList!.splice(i, 1);
-    if (portList!.length === 0) {
+    const portSet = map.get(key)!;
+    portSet.delete(port);
+    if (portSet.size === 0) {
         map.delete(key);
         return true;
     }
@@ -38,12 +33,11 @@ const removePortForKey = (key: string, port: MessagePort): boolean => {
 
 const removePort = (port: MessagePort): string[] => {
     const topicKeysWithoutPorts = [];
-    for (const [topic, portList] of map) {
-        const i = portList.indexOf(port);
-        if (i === -1) continue;
+    for (const [topic, portSet] of map) {
+        if (!portSet.has(port)) continue;
 
-        portList.splice(i, 1);
-        if (portList.length === 0)
+        portSet.delete(port);
+        if (portSet.size === 0)
             topicKeysWithoutPorts.push(topic);
     }
 

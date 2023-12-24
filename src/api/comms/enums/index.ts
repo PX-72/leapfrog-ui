@@ -1,4 +1,4 @@
-export enum EventType {
+export const enum EventType {
     SubscribeToMarketData = 'SubscribeToMarketData',
     UnsubscribeFromMarketData = 'UnsubscribeFromMarketData',
     MarketDataResponse = 'MarketDataResponse',
@@ -7,7 +7,13 @@ export enum EventType {
     ClosePort = 'ClosePort'
 }
 
-export enum Status {
+export const enum ServerEventType {
+    SUBSCRIBE_TO_MARKET_DATA = 'SUBSCRIBE_TO_MARKET_DATA',
+    UNSUBSCRIBE_FROM_MARKET_DATA = 'UNSUBSCRIBE_FROM_MARKET_DATA',
+    MARKET_DATA_RESPONSE = 'MARKET_DATA_RESPONSE'
+}
+
+export const enum Status {
     Unknown = 'Unknown',
     Closed = 'Closed',
     Closing = 'Closing',
