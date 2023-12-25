@@ -5,6 +5,7 @@ import { mediaSmallScreenPoint } from './components/common/buttonStyles';
 import { useEffect } from 'react';
 import { useStaticDataStore } from '@/stores/staticDataStore';
 import { marketDataConnection } from '@/api/shared-worker/market-data/workerClient';
+import { startMarketDataSubscription } from '@/api/marketDataReceiverApi';
 
 const StyledAppContainer = styled.div`
     display: grid;
@@ -28,12 +29,17 @@ export const App = () => {
     useEffect(() => {
         loadCurrencyPairs();
         marketDataConnection.connect();
+        const stopListeners = startMarketDataSubscription();
 
         window.onbeforeunload = () => {
             marketDataConnection.close();
+            stopListeners?.();
         }
 
-        return () => marketDataConnection.close();
+        return () => {
+            marketDataConnection.close();
+            stopListeners?.();
+        }
     }, []);
 
     return (

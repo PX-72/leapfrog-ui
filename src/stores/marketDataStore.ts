@@ -11,12 +11,15 @@ type Subscription = {
 
 type StatusInformation = {
     statusMessage: string,
-    hasError: boolean,
-    errorMessage?: string
+    status: 'unknown' | 'healthy' | 'error'
 };
 
 type Store = {
     status: StatusInformation,
+    errorNotification: {
+        error: string,
+        hasError: boolean
+    },
     subscriptions: {
         [currencyPair: string]: Subscription
     }
@@ -25,6 +28,10 @@ type Store = {
 const initialState: Store = {
     status: {
         statusMessage: 'closed',
+        status: 'unknown'
+    },
+    errorNotification: {
+        error: '',
         hasError: false
     },
     subscriptions: {}
@@ -32,7 +39,9 @@ const initialState: Store = {
 
 type Actions = {
     addSubscriptions: (currencyPair: string) => void,
-    removeSubscriptions: (currencyPair: string) => void
+    removeSubscriptions: (currencyPair: string) => void,
+    consumeNewMarketDataUpdate: (marketData: MarketData) => void
+    consumeError: (error: string) => void
 };
 
 export const useMarketDataStore = create<Store & Actions, [['zustand/immer', never]]>(
@@ -53,6 +62,19 @@ export const useMarketDataStore = create<Store & Actions, [['zustand/immer', nev
                 });
                 unsubscribe(currencyPair);
             }
+        },
+        consumeNewMarketDataUpdate: (marketData: MarketData) => {
+            if (!marketData || !Object.hasOwn(get().subscriptions, marketData.ccyPair)) return;
+
+            set(({ subscriptions }) => {
+                subscriptions[marketData.ccyPair] = { data: marketData, lastUpdated: new Date() };
+            });
+        },
+        consumeError: (error: string) => {
+            set(({ errorNotification }) => {
+                errorNotification.error = error;
+                errorNotification.hasError = true;
+            });
         }
     }))
 );
