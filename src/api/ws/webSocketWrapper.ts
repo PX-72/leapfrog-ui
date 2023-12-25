@@ -1,4 +1,4 @@
-import { Status } from './enums';
+import { Status } from './Status';
 
 const MAXIMUM_DELAY = 10_000;
 

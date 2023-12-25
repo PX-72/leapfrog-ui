@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { MarketData } from '@/api/types';
+import { subscribe, unsubscribe } from '@/api/marketDataSubscriberApi';
 // import * as notification from './components/common/notification.js';
 
 type Subscription = {
@@ -38,15 +39,20 @@ export const useMarketDataStore = create<Store & Actions, [['zustand/immer', nev
     immer((set, get) => ({
         ...initialState,
         addSubscriptions: currencyPair => {
-            if (!Object.hasOwn(get().subscriptions, currencyPair))
+            if (!Object.hasOwn(get().subscriptions, currencyPair)){
                 set(({ subscriptions }) => {
                     subscriptions[currencyPair] = {};
                 });
+                subscribe(currencyPair);
+            }
         },
         removeSubscriptions: currencyPair => {
-            set(({ subscriptions }) => {
-                delete subscriptions[currencyPair];
-            });
+            if (Object.hasOwn(get().subscriptions, currencyPair)) {
+                set(({ subscriptions }) => {
+                    delete subscriptions[currencyPair];
+                });
+                unsubscribe(currencyPair);
+            }
         }
     }))
 );

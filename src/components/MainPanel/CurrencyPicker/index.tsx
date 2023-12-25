@@ -22,7 +22,9 @@ const CurrencyPicker = ({ currencyPairs, defaultCurrencyPair }: CurrencyPickerPr
             <DropDownList options={currencyPairs}
                           onSelect={(c) => setSelectedCurrencyPair(c)}
                           defaultItem={defaultCurrencyPair}/>
-            <DefaultButton onClick={() => {addSubscription(selectedCurrencyPair)}}>Subscribe</DefaultButton>
+            <DefaultButton onClick={() => {
+                addSubscription(selectedCurrencyPair);
+            }}>Subscribe</DefaultButton>
         </div>
     );
 };

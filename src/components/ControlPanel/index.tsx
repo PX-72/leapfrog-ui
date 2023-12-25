@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { MarketDataRequest } from './MarketDataRequest.js';
 
 const StyledControlPanel = styled.div`
     background-color: ${(props) => `${props.theme.panel.backgroundColor}`};
@@ -26,7 +25,7 @@ export const ControlPanel = () => {
     return (
         <StyledControlPanel>
             <ControlPanelItemBox>
-                <MarketDataRequest />
+                <h3>Market Data View</h3>
             </ControlPanelItemBox>
         </StyledControlPanel>
     );

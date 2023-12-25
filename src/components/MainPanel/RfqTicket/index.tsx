@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { useMarketDataStore } from '@/stores/marketDataStore';
 
-
 export const StyledRfqTicket = styled.div`
     width: 400px;
     height: 160px;
@@ -14,9 +13,7 @@ type RfqTicketProps = {
 }
 
 const RfqTicket = ({ currencyPair }: RfqTicketProps) => {
-
     const marketDataSubscription = useMarketDataStore(state => state.subscriptions[currencyPair]);
-
     return <StyledRfqTicket>{currencyPair} / {marketDataSubscription?.data?.bid}</StyledRfqTicket>
 };
 

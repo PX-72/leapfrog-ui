@@ -1,5 +1,5 @@
 import { DefaultStyledSelect } from './dropdownStyles';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 type DropDownListProps = {
     options: Map<string, string> | Array<string>,
@@ -11,6 +11,7 @@ type DropDownListProps = {
 const arrayToMap = (array: Array<string>) => new Map(array.map(element => [element, element]));
 
 const DropDownList = ({ options, onSelect, defaultItem, textWhenNoneSelected }: DropDownListProps) => {
+    const [selectedItem, setSelectedItem] = useState<string>(defaultItem);
 
     const optionsInternal = Array.from(Array.isArray(options) ? arrayToMap(options) : options);
 
@@ -19,11 +20,12 @@ const DropDownList = ({ options, onSelect, defaultItem, textWhenNoneSelected }: 
     });
 
     const onSelectInternal = ({ target: { value } }: ChangeEvent<HTMLSelectElement>) => {
+        setSelectedItem(value);
         if (value.length > 0) onSelect(value);
     };
 
     return (
-        <DefaultStyledSelect value={defaultItem} onChange={onSelectInternal}>
+        <DefaultStyledSelect value={selectedItem} onChange={onSelectInternal}>
             {textWhenNoneSelected != null && <option value=''>{textWhenNoneSelected}</option>}
             {optionElements}
         </DefaultStyledSelect>
