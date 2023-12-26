@@ -15,5 +15,5 @@ export const startMarketDataSubscription = () => {
     return () => {
         marketDataListener.remove(updateFn);
         errorListener.remove(errorFn);
-    }
+    };
 };

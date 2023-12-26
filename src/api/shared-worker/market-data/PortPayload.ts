@@ -13,24 +13,24 @@ export const enum PortEventType {
 
 export type StatusPayload = {
     status: Status
-}
+};
 
 export type CurrencyPairPayload = {
     currencyPair: string
-}
+};
 
 export type ErrorPayload = {
     error: string
-}
+};
 
 export type LogType = 'debug' | 'error';
 
 export type LogPayload = {
     logType: LogType,
     message: string
-}
+};
 
 export type PortPayload = {
     type: PortEventType,
     payload?: StatusPayload | CurrencyPairPayload | ErrorPayload | LogPayload | MarketData | string
-}
+};
