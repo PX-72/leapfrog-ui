@@ -2,6 +2,7 @@ import { createWebSocket, WebSocketWrapper } from '../../ws/webSocketWrapper';
 import { Status } from '@/api/ws/Status';
 import { createTopicPortsMap } from '../topicPortsMap';
 import { CurrencyPairPayload, LogType, PortEventType, PortPayload } from '@/api/shared-worker/market-data/PortPayload';
+import { MarketData } from '@/api/types';
 
 export {};
 
@@ -128,12 +129,18 @@ const sendWsMessage = (portMessage: PortPayload, sourcePort?: MessagePort) => {
 
 const handleWsMessage = (message: MessageEvent) => {
     try {
-        const msg = JSON.parse(message.data) as {
-            topic: string,
-            payload?: string
-        };
-        const portList = subscriptionMap.getPortsByKey(msg.topic) ?? [];
-        portList.forEach(p => p.postMessage(msg.payload));
+        const { type, payload } = JSON.parse(message.data);
+        switch (type) {
+            case ServerEventType.MARKET_DATA_RESPONSE: {
+                const marketData = payload as MarketData;
+                const portList = subscriptionMap.getPortsByKey(marketData.ccyPair) ?? [];
+                portList.forEach(p => p.postMessage(
+                    { type: PortEventType.MarketDataResponse, payload: marketData }
+                ));
+                break;
+            }
+            default: postLogMessage(`Unexpected server message type was received: ${type}`, 'error');
+        }
     } catch (err) {
         postLogMessage(`An error occurred while consuming server message. ${err}`, 'error');
     }

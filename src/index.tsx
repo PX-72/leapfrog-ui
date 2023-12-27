@@ -3,6 +3,7 @@ import { App } from './App';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'tailwindcss/tailwind.css';
 
 const theme = {
     fontColor: '#FAFAFA',
@@ -21,6 +22,7 @@ const theme = {
 
     panel: {
         backgroundColor: '#27272A',
+        darkerBackgroundColor: '#1b1b1d',
         borderRadius: '0.5rem',
         padding: '1.2rem',
         margin: '0.5rem'

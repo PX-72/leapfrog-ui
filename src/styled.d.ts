@@ -23,6 +23,7 @@ declare module 'styled-components' {
 
         panel: {
             backgroundColor: string;
+            darkerBackgroundColor: string;
             borderRadius: string;
             padding: string;
             margin: string;

@@ -4,7 +4,7 @@ import { useMarketDataStore } from '@/stores/marketDataStore';
 let subscriptionHasStarted = false;
 
 export const startMarketDataSubscription = () => {
-    if (subscriptionHasStarted) return;
+    if (subscriptionHasStarted) return; // todo
 
     const updateFn = useMarketDataStore.getState().consumeNewMarketDataUpdate;
     marketDataListener.add(updateFn);

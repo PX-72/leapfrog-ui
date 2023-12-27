@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import { MarketData } from '@/api/types';
 import { subscribe, unsubscribe } from '@/api/marketDataSubscriberApi';
@@ -44,8 +45,8 @@ type Actions = {
     consumeError: (error: string) => void
 };
 
-export const useMarketDataStore = create<Store & Actions, [['zustand/immer', never]]>(
-    immer((set, get) => ({
+export const useMarketDataStore = create<Store & Actions, [['zustand/immer', never], ['zustand/devtools', never]]>(
+    immer(devtools((set, get) => ({
         ...initialState,
         addSubscriptions: currencyPair => {
             if (!Object.hasOwn(get().subscriptions, currencyPair)){
@@ -76,5 +77,5 @@ export const useMarketDataStore = create<Store & Actions, [['zustand/immer', nev
                 errorNotification.hasError = true;
             });
         }
-    }))
+    }), { enabled: process.env.NODE_ENV !== 'production' }))
 );
