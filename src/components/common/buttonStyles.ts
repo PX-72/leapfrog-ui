@@ -16,6 +16,15 @@ export const buttonLikeBaseStyle = css`
     }
 `;
 
+export const buttonLikeBaseStyle_noBg = css`
+    ${commonButtonLikeBaseStyle}
+    color: ${(props) => `${props.theme.button.color}`};
+    &:hover {
+        color: ${(props) => `${props.theme.button.hoverColor}`};
+        background-color: ${(props) => `${props.theme.button.hoverBackground}`};
+    }
+`;
+
 export const dangerButtonLikeBaseStyle = css`
     ${commonButtonLikeBaseStyle}
     color: ${(props) => `${props.theme.button.color}`};
@@ -45,6 +54,11 @@ const commonSmallButtonStyle = css`
 
 export const SmallButton = styled.button`
     ${buttonLikeBaseStyle}
+    ${commonSmallButtonStyle}
+`;
+
+export const SmallButtonNoBg = styled.button`
+    ${buttonLikeBaseStyle_noBg}
     ${commonSmallButtonStyle}
 `;
 

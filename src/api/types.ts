@@ -4,5 +4,6 @@ export type MarketData = {
     offer: number,
     low: number,
     high: number,
-    ecn: string
+    ecn: string,
+    scale: number
 };

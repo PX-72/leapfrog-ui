@@ -64,13 +64,12 @@ const close = () => {
 const postSubscriptionMsg = (type: PortEventType, currencyPair: string) => {
     if (!worker || !isReady()){
         const subType = type === PortEventType.SubscribeToMarketData ? 'subscribe' : 'unsubscribe';
-        throw new Error(`Cannot ${subType} to market data (${currencyPair}). Server connection is not ready.`);
+        throw Error(`Cannot ${subType} to market data (${currencyPair}). Server connection is not ready.`);
     }
 
-    const message: PortPayload = { type, payload: { currencyPair } };
-
+    const message = { type, payload: { currencyPair } };
     worker.port.postMessage(message);
-}
+};
 
 export const marketDataConnection = { connect, close };
 

@@ -1,9 +1,7 @@
-
-
 export const createTopicPortsMap = () => {
     const map = new Map<string, Set<MessagePort>>();
 
-    const getPortsByKey = (key: string): MessagePort[] => [...(map.get(key) ?? [])];
+    const getPortsByKey = (key: string): ReadonlySet<MessagePort> => new Set(map.get(key) ?? []);
 
     const addPort = (key: string, port: MessagePort): boolean => {
         if (!map.has(key)) {

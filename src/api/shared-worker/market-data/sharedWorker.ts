@@ -133,7 +133,7 @@ const handleWsMessage = (message: MessageEvent) => {
         switch (type) {
             case ServerEventType.MARKET_DATA_RESPONSE: {
                 const marketData = payload as MarketData;
-                const portList = subscriptionMap.getPortsByKey(marketData.ccyPair) ?? [];
+                const portList = subscriptionMap.getPortsByKey(marketData.ccyPair);
                 portList.forEach(p => p.postMessage(
                     { type: PortEventType.MarketDataResponse, payload: marketData }
                 ));
