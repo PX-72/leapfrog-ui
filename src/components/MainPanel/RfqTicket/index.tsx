@@ -23,9 +23,9 @@ const RfqTicket = ({ currencyPair }: RfqTicketProps) => {
 
     return <StyledRfqTicket>
         <div className="text-2xl">{currencyPair}</div>
-        <div className="text-xs">bid: {marketDataUpdate.data?.bid}</div>
-        <div className="text-xs">ask: {marketDataUpdate.data?.offer}</div>
-        <div className="text-xs">ecn: {marketDataUpdate.data?.ecn}</div>
+        <div className="text-sm">bid: {marketDataUpdate.data?.bid}</div>
+        <div className="text-sm">ask: {marketDataUpdate.data?.offer}</div>
+        <div className="text-sm">ecn: {marketDataUpdate.data?.ecn}</div>
         <SmallButton onClick={() => removeSubscriptions(currencyPair)}
                      className="absolute top-1 right-1 w-4 h-4">x</SmallButton>
     </StyledRfqTicket>
